@@ -1,0 +1,59 @@
+{% include 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="wrapper">
+
+ <main role="main" class="main-content">
+     {% include 'navbar.html' %}
+        <div class="container-fluid">
+          <div class="row justify-content-center mt-4">
+
+            <div class="col-12 col-xl-12">
+              <h2 class="page-title">Delivery Day Estimation</h2>
+              <p class="text" style="">The Delivery Date Estimation page helps expectant mothers estimate their due date based on their last menstrual period (LMP) and menstrual cycle length. By entering the first day of your last menstrual period and your cycle length, the tool calculates your estimated due date by adding approximately 280 days (40 weeks) from the LMP, adjusting for cycle length variations. This method provides a reliable estimate for planning prenatal care and preparing for your baby's arrival. </p>
+              <div class="card-deck">
+              </div> <!-- / .card-desk-->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card shadow mb-4">
+                    <div class="card-header">
+                      <strong class="card-title">All fields are required.</strong>
+                    </div>
+                    <div class="card-body">
+                      <form method="post" enctype="multipart/form-data" action="{% url 'delivery-date' %}">
+                          {% csrf_token %}
+                          <div class="form-row">
+                            <div class="form-group col-md-6">
+                            <label for="inputPhone">Last Menstrual Period</label>
+                            {{ form.last_menstrual_period }}
+                          </div>
+                          </div>
+                              <div class="form-row">
+                             <div class="form-group col-md-6">
+                            <label for="warradasdnty">Period Cycle Length</label>
+                            {{ form.cycle_length }}
+                          </div>
+                          </div>
+
+
+                        <button type="submit" class="btn btn-primary">Predict Delivery Date</button>
+                      </form>
+                    </div>
+<!-- /. card-body -->
+                  </div> <!-- /. card -->
+                                          <h2>Predicted Date is :  {{ date }}</h2>
+                </div> <!-- /. col -->
+              </div> <!-- /. end-section -->
+             </div> <!-- .col-12 -->
+          </div> <!-- .row -->
+        </div> <!-- .container-fluid -->
+      </main>
+
+</div>
+
+{% include 'scripts.html' %}
+
+{% endblock content %}

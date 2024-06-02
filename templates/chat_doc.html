@@ -1,0 +1,56 @@
+{% include 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<div class="wrapper">
+
+ <main role="main" class="main-content">
+     {% include 'navbar.html' %}
+        <div class="container-fluid">
+          <div class="row justify-content-center mt-4">
+
+            <div class="col-12 col-xl-12">
+              <h2 class="page-title">Symptom Assessment</h2>
+              <p class="text" style="">
+
+The symptom assessment feature integrated into our pregnancy monitoring app provides users with a convenient and reliable method to evaluate their health status based on reported symptoms. By utilizing advanced AI technology, users can describe their symptoms using natural language, and the system will analyze the information to generate personalized assessments. This feature aims to empower expectant mothers with actionable insights, enabling them to make informed decisions about their health and well-being during pregnancy. With a user-friendly interface and seamless integration, our app ensures a seamless experience for users seeking guidance and reassurance regarding their pregnancy-related symptoms.</p>
+              <div class="card-deck">
+              </div> <!-- / .card-desk-->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="card shadow mb-4">
+                    <div class="card-header">
+                      <strong class="card-title">All fields are required.</strong>
+                    </div>
+                    <div class="card-body">
+                      <form method="post" enctype="multipart/form-data" action="{% url 'chat' %}">
+                          {% csrf_token %}
+                          <div class="form-row">
+                            <div class="form-group col-md-10">
+                            <label for="inputPhone">Symptoms</label>
+                            {{ form.symptoms }}
+                          </div>
+                          </div>
+
+
+                        <button type="submit" class="btn btn-primary">Generate Assessment</button>
+                      </form>
+                    </div>
+<!-- /. card-body -->
+                  </div> <!-- /. card -->
+                                          <h2>Diagnosis : </h2>
+                    <p>{{ response }}</p>
+                </div> <!-- /. col -->
+              </div> <!-- /. end-section -->
+             </div> <!-- .col-12 -->
+          </div> <!-- .row -->
+        </div> <!-- .container-fluid -->
+      </main>
+
+</div>
+
+{% include 'scripts.html' %}
+
+{% endblock content %}

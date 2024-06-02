@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="wrapper">
+ <main role="main" class="main-content">
+     {% include 'navbar.html' %}
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <div class="row align-items-center my-4">
+                <div class="col">
+                  <h2 class="h3 mb-0 page-title">Common Pregnancy Risks</h2>
+                </div>
+              </div>
+              <div class="row">
+                  {% for risk in risks %}
+                <div class="col-md-3">
+                  <div class="card shadow mb-4">
+                    <div class="card-body text-center">
+                      <div class="avatar avatar-lg">
+                        <a href="">
+                          <img src="{% static 'assets/images/risk.jpg' %}" alt="..." class="avatar-img rounded-circle">
+                        </a>
+                      </div>
+                      <div class="card-text my-2">
+                        <strong class="card-title my-0">{{ risk.title }} </strong>
+                        <p class="small"><span class="badge badge-light text-muted">{{ risk.description }}</span></p>
+                      </div>
+                    </div> <!-- ./card-text -->
+                    <div class="card-footer">
+                      <div class="row align-items-center justify-content-between">
+                        <div class="col-auto">
+                          <small>
+                            <span></span> {{ risk.category }} </small>
+                        </div>
+                        <div class="col-auto">
+                        </div>
+                      </div>
+                    </div> <!-- /.card-footer -->
+                  </div>
+                </div> <!-- .col -->
+                  {% endfor %}
+
+              </div> <!-- .row -->
+            </div> <!-- .col-12 -->
+          </div> <!-- .row -->
+        </div> <!-- .container-fluid -->
+      </main> <!-- main --> <!-- main -->
+</div>
+<script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/simplebar.min.js' %}"></script>
+    <script src='{% static 'js/daterangepicker.js' %}'></script>
+    <script src='{% static 'js/jquery.stickOnScroll.js' %}'></script>
+    <script src="{% static 'js/tinycolor-min.js' %}"></script>
+    <script src="{% static 'js/config.js' %}"></script>
+    <script src='{% static 'js/jquery.dataTables.min.js' %}'></script>
+    <script src='{% static 'js/dataTables.bootstrap4.min.js' %}'></script>
+    <script>
+      $('#dataTable-1').DataTable(
+      {
+        autoWidth: true,
+        "lengthMenu": [
+          [16, 32, 64, -1],
+          [16, 32, 64, "All"]
+        ]
+      });
+    </script>
+    <script src="{% static 'js/apps.js' %}"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag()
+      {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'UA-56159088-1');
+    </script>
+
+
+{% endblock content %}
