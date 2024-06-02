@@ -70,3 +70,13 @@ class SymptomAssessmentForm(forms.Form):
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Describe your symptoms...'}),
         label="Describe your symptoms"
     )
+
+
+class DietPlanForm(forms.Form):
+    diet_plan = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Describe your diet plan...'}),
+        label="Describe your diet plan"
+    )
+
+
+

@@ -12,7 +12,7 @@ from .models import User, UserProfile, Contraction, WeightTracker, PregnancyRisk
 from .admin import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import UserProfileForm, ContractionForm, DeliveryDatePredictionForm, WeightTrackerForm, \
-    SymptomAssessmentForm
+    SymptomAssessmentForm, DietPlanForm
 from .decorators import user_required
 from django.utils.dateparse import parse_duration
 from .symptom_assesment import get_assessment
@@ -39,7 +39,7 @@ class UserRegistrationView(CreateView):
         user.is_staff = False
         user.save()
         login(self.request, user)
-        return redirect('dashboard')
+        return redirect('user-login')
 
 
 class RegularUserLoginView(LoginView):
@@ -62,14 +62,14 @@ def index_view(request):
     days_left = user_profile.due_date - datetime.today().date()
 
     ctx = {
-        'weight': WeightTracker.objects.all().last().weight if WeightTracker.objects.first() else user_profile.current_weight,
+        'weight': WeightTracker.objects.filter(user=request.user).first().weight if WeightTracker.objects.filter(user=request.user).count() != 0  else user_profile.current_weight,
         'delivery_date': user_profile.due_date,
         'days_left': days_left.days,
         'height': user_profile.height,
-        'mild_contractions': Contraction.objects.filter(intensity='Mild').count(),
-        'severe_contractions': Contraction.objects.filter(intensity='Severe').count(),
-        'moderate_contractions': Contraction.objects.filter(intensity='Moderate').count(),
-        'contractions': Contraction.objects.all()[:5]
+        'mild_contractions': Contraction.objects.filter(intensity='Mild', user=request.user).count(),
+        'severe_contractions': Contraction.objects.filter(intensity='Severe', user=request.user).count(),
+        'moderate_contractions': Contraction.objects.filter(intensity='Moderate', user=request.user).count(),
+        'contractions': Contraction.objects.filter(user=request.user)[:5]
     }
     return render(request, 'index.html', ctx)
 
@@ -132,10 +132,18 @@ def contractions_view(request):
 
 @user_required()
 def risk_view(request):
+    if request.method == 'POST':
+        form = DietPlanForm(request.POST)
+        if form.is_valid():
+            data = get_assessment(form.data['diet_plan'])
+            return render(request, 'diet.html', {
+                'form': DietPlanForm(),
+                'response': data['text']
+            })
     ctx = {
-        'risks': PregnancyRisk.objects.all()
+        'form': DietPlanForm()
     }
-    return render(request, 'risks.html', ctx)
+    return render(request, 'diet.html', ctx)
 
 
 @user_required()
@@ -156,8 +164,16 @@ def chat_view(request):
 
 @user_required()
 def diet_view(request):
+    if request.method == 'POST':
+        form = DietPlanForm(request.POST)
+        if form.is_valid():
+            data = get_assessment(form.data['diet_plan'])
+            return render(request, 'diet.html', {
+                'form': DietPlanForm(),
+                'response': data['text']
+            })
     ctx = {
-        'diets': DietPlan.objects.all()
+        'form': DietPlanForm()
     }
     return render(request, 'diet.html', ctx)
 
@@ -171,6 +187,7 @@ def create_user_profile_view(request):
                 user=request.user,
                 phone_number=form.data['phone_number'],
                 date_of_birth=form.data['date_of_birth'],
+                current_weight=form.data['current_weight'],
                 last_menstrual_period=form.data['last_menstrual_period'],
                 height=form.data['height'],
                 due_date=form.data['due_date'],
