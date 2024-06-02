@@ -128,7 +128,6 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-OPENAI_API_KEY = 'sk-proj-hj8fHIMn4ceYW0xa6gZ0T3BlbkFJ4lDxscQVvO41MLxwV2lJ'
 
 AUTH_USER_MODEL = 'core.User'
 # LOGIN_REDIRECT_URL = '/users/dashboard'
